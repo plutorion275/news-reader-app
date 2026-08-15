@@ -2,6 +2,7 @@ import { useState } from 'react'
 import ArticleDetail from './components/ArticleDetail'
 import ArticleFeed from './components/ArticleFeed'
 import CategoryTabs from './components/CategoryTabs'
+import FeedSkeleton from './components/FeedSkeleton'
 import SearchBar from './components/SearchBar'
 import { useArticles } from './hooks/useArticles'
 import { useDebouncedValue } from './hooks/useDebouncedValue'
@@ -35,15 +36,25 @@ function App() {
       </header>
       <main className="app-main">
         {status === 'loading' && (
-          <p className="feed-placeholder">Loading headlines…</p>
+          <>
+            <p className="sr-only" role="status">
+              Loading headlines…
+            </p>
+            <FeedSkeleton />
+          </>
         )}
         {status === 'error' && (
-          <p className="feed-placeholder">
-            Couldn't load news: {error.message}
-          </p>
+          <div className="feed-placeholder feed-placeholder-error" role="alert">
+            <p>Couldn't load news.</p>
+            <p className="feed-placeholder-detail">{error.message}</p>
+          </div>
         )}
         {status === 'success' && articles.length === 0 && (
-          <p className="feed-placeholder">No articles found.</p>
+          <p className="feed-placeholder">
+            {debouncedSearch
+              ? `No results for "${debouncedSearch}".`
+              : 'No articles found in this category right now.'}
+          </p>
         )}
         {status === 'success' && articles.length > 0 && (
           <ArticleFeed
