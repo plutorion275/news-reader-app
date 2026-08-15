@@ -1,18 +1,35 @@
 import { useState } from 'react'
 import ArticleFeed from './components/ArticleFeed'
 import CategoryTabs from './components/CategoryTabs'
+import SearchBar from './components/SearchBar'
 import { useArticles } from './hooks/useArticles'
+import { useDebouncedValue } from './hooks/useDebouncedValue'
 import './App.css'
 
 function App() {
   const [category, setCategory] = useState('general')
-  const { articles, status, error } = useArticles({ category })
+  const [search, setSearch] = useState('')
+  const debouncedSearch = useDebouncedValue(search.trim(), 400)
+
+  const { articles, status, error } = useArticles({
+    category,
+    query: debouncedSearch || undefined,
+  })
+
+  function handleSelectCategory(nextCategory) {
+    setCategory(nextCategory)
+    setSearch('')
+  }
 
   return (
     <>
       <header className="app-header">
         <h1 className="app-title">NewsReader</h1>
-        <CategoryTabs activeCategory={category} onSelectCategory={setCategory} />
+        <SearchBar value={search} onChange={setSearch} />
+        <CategoryTabs
+          activeCategory={category}
+          onSelectCategory={handleSelectCategory}
+        />
       </header>
       <main className="app-main">
         {status === 'loading' && (
