@@ -1,18 +1,18 @@
+import { useState } from 'react'
 import ArticleFeed from './components/ArticleFeed'
+import CategoryTabs from './components/CategoryTabs'
 import { useArticles } from './hooks/useArticles'
 import './App.css'
 
-const DEFAULT_CATEGORY = 'general'
-
 function App() {
-  const { articles, status, error } = useArticles({
-    category: DEFAULT_CATEGORY,
-  })
+  const [category, setCategory] = useState('general')
+  const { articles, status, error } = useArticles({ category })
 
   return (
     <>
       <header className="app-header">
         <h1 className="app-title">NewsReader</h1>
+        <CategoryTabs activeCategory={category} onSelectCategory={setCategory} />
       </header>
       <main className="app-main">
         {status === 'loading' && (
