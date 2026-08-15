@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import ArticleDetail from './components/ArticleDetail'
 import ArticleFeed from './components/ArticleFeed'
 import CategoryTabs from './components/CategoryTabs'
 import SearchBar from './components/SearchBar'
@@ -9,6 +10,7 @@ import './App.css'
 function App() {
   const [category, setCategory] = useState('general')
   const [search, setSearch] = useState('')
+  const [selectedArticle, setSelectedArticle] = useState(null)
   const debouncedSearch = useDebouncedValue(search.trim(), 400)
 
   const { articles, status, error } = useArticles({
@@ -44,9 +46,18 @@ function App() {
           <p className="feed-placeholder">No articles found.</p>
         )}
         {status === 'success' && articles.length > 0 && (
-          <ArticleFeed articles={articles} onSelectArticle={() => {}} />
+          <ArticleFeed
+            articles={articles}
+            onSelectArticle={setSelectedArticle}
+          />
         )}
       </main>
+      {selectedArticle && (
+        <ArticleDetail
+          article={selectedArticle}
+          onClose={() => setSelectedArticle(null)}
+        />
+      )}
     </>
   )
 }
