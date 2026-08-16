@@ -9,8 +9,6 @@ A single-page news reader built with React + Vite. Fetches live headlines from
 [NewsAPI.org](https://newsapi.org), with category filters, keyword search, and
 an article detail view.
 
-![NewsReader screenshot](docs/screenshots/preview.png)
-
 ## Table of Contents
 
 - [Features](#features)
@@ -64,7 +62,7 @@ an article detail view.
 - NewsAPI's free tier blocks browser requests from non-`localhost` origins,
   so this app is scoped to local/dev use for v1. A serverless proxy would be
   needed to deploy publicly — see `PLAN.md` for details.
-- See `EXPLAINER.md` for a plain-language overview of how the app is structured.
+- See `EXPLAINER.md` for a plain-English overview of how the app is structured.
 - See `PROGRESS.md` for a build log of all six milestones.
 
 ## Tech Stack
